@@ -59,13 +59,6 @@ public class DefaultProviderImpl extends AbstractFileProvider {
                 VirtualFile vFile = VfsUtil.createDirectoryIfMissing(outputPath);
                 PsiDirectory psiDirectory = PsiDirectoryFactory.getInstance(this.project).createDirectory(vFile);
                 PsiDirectory directory = subDirectory(psiDirectory, subPath, template.getResources());
-                // TODO: 这里干啥用的, 没用的话是不是可以删除了
-                if (JavaFileType.INSTANCE == this.languageFileType) {
-                    PsiPackage psiPackage = JavaDirectoryService.getInstance().getPackage(directory);
-                    if (psiPackage != null && !StringUtils.isEmpty(psiPackage.getQualifiedName())) {
-                        extraMap.put(fileName, new StringBuilder(psiPackage.getQualifiedName()).append(".").append(fileName));
-                    }
-                }
                 createFile(project, directory, fileName + "." + this.languageFileType.getDefaultExtension(), temp, this.languageFileType);
             } catch (Exception e) {
                 LOGGER.error(StringUtils.getStackTraceAsString(e));
